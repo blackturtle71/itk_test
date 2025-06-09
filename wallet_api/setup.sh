@@ -1,5 +1,5 @@
 #!/bin/sh
-docker-compose up -d
+docker-compose up -d --build
 
 DB_CONTAINER=$(docker-compose ps -q db)
 WEB_CONTAINER=$(docker-compose ps -q web)
@@ -18,4 +18,8 @@ wait_for_container "$DB_CONTAINER"
 wait_for_container "$WEB_CONTAINER"
 
 docker-compose exec web python manage.py makemigrations
+sleep 2
 docker-compose exec web python manage.py migrate
+sleep 2
+docker-compose exec web python manage.py test
+echo "Setup complete. Wallet generator is available at http://localhost:8000/api/v1/walletgen/"
