@@ -22,4 +22,9 @@ sleep 2
 docker-compose exec web python manage.py migrate
 sleep 2
 docker-compose exec web python manage.py test
+sleep 2
+# for whatever reason you can't connect to the API right after setup, reset helps :)
+docker-compose stop
+sleep 2
+docker-compose up -d
 echo "Setup complete. Wallet generator is available at http://localhost:8000/api/v1/walletgen/"
